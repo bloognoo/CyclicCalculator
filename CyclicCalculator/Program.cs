@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CyclicCalculator
 {
@@ -8,24 +9,56 @@ namespace CyclicCalculator
         {
             ConsoleKeyInfo key = new ConsoleKeyInfo();
 
+            char next = ' ';
             int total = 0;
+            int acc = 0;
+            bool done = false;
+            List<char> ops = new List<char>();
+            ops.Add('+');
+            ops.Add('-');
+            ops.Add('*');
+            ops.Add('/');
+            ops.Add('=');
             do{
                 key = Console.ReadKey(true);
                 try{
                     string str = ""+key.KeyChar;
                     int val =  Convert.ToInt32(str);
-                    if(total == 0 && val == 0){
+                    if(acc == 0 && val == 0){
                         continue;
                     }else{
-                        total *= 10;
-                        total += val;
+                        acc *= 10;
+                        acc += val;
                     }
-                    Console.WriteLine("Character: "+str+" "+val+" "+total);
-                }catch(Exception e){
-                    Console.WriteLine("Exception: "+e.Message+" "
-                            +key.Key.ToString());
+                    Console.Write(key.KeyChar);
+                    continue;
+                }catch(Exception ){
                 }
-            }while(key.Key != ConsoleKey.Escape);
+               
+
+                if(ops.Contains(key.KeyChar)){
+                    if(ops.Contains(next)){
+                        switch(next){
+                            case '+': total += acc; break;
+                            case '-': total -= acc; break;
+                            case '*': total *= acc; break;
+                            case '/': total /= acc; break;
+                            case '=': done = true; break;
+                            default:break; //Whu?
+                        }
+                        acc = 0;
+                        if(key.KeyChar == '='){
+                            done = true;
+                        }
+                    } else {
+                        total = acc;
+                        acc = 0;
+                    } 
+                    Console.Write(key.KeyChar);
+                    next = key.KeyChar;
+                }
+            }while(!done && key.Key != ConsoleKey.Escape);
+            Console.WriteLine(total);
         }
     }
 }
