@@ -9,6 +9,7 @@ namespace CyclicCalculator
         {
             ConsoleKeyInfo key = new ConsoleKeyInfo();
 
+            Console.WriteLine("Type Your Equation Below: ");
             char next = ' ';
             int total = 0;
             int acc = 0;
